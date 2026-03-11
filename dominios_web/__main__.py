@@ -25,36 +25,35 @@ class ExtensionImpl(Extension):
 
 
         for endpoint in self.activation_config["endpoints"]:
-##            url = 'https://rdap.nic.ar/domain/allianz.com.ar' ##OJO
             dominio = endpoint['dominio'] ### OJO
             url = f"{NIC_DOMEAIN_CHECL_URL}/{endpoint['dominio']}"
-#            # user = endpoint["user"]
-#            # password = endpoint["password"]
-#            self.logger.info(f"Consultando dominio {endpoint['dominio']} mediante '{url}'")
-#            #--------------------------------------------------------------------------------------
-#            # Averiguo la fecha de vencimiento
-#            #--------------------------------------------------------------------------------------
-#            r = requests.get(url)
-#            ######O JO chequear error r.status_code
-#            if r.status_code != 200:
-#                self.logger.error(f"Se obtuvo el error: {r.status_code} invocando el GET para {url}")
-#                continue
-#            events = r.json()["events"]
-#            expiration = ''
-#            for event in events:
-#                print(event)
-#                if event['eventAction'] == 'expiration':
-#                    expiration = event['eventDate']
-#            if expiration == '':
-#                self.logger.error(f"Error http_code={r.status_code} invocando el GET para {url}")
-#                continue
-#            n = datetime.now(timezone.utc)
-#            e = datetime.fromisoformat(expiration)
-#            days_diff = (e -n).days
+            # user = endpoint["user"]
+            # password = endpoint["password"]
+            self.logger.info(f"Consultando dominio {endpoint['dominio']} mediante '{url}'")
+            #--------------------------------------------------------------------------------------
+            # Averiguo la fecha de vencimiento
+            #--------------------------------------------------------------------------------------
+            r = requests.get(url)
+            ######O JO chequear error r.status_code
+            if r.status_code != 200:
+                self.logger.error(f"Se obtuvo el error: {r.status_code} invocando el GET para {url}")
+                continue
+            events = r.json()["events"]
+            expiration = ''
+            for event in events:
+                print(event)
+                if event['eventAction'] == 'expiration':
+                    expiration = event['eventDate']
+            if expiration == '':
+                self.logger.error(f"Error http_code={r.status_code} invocando el GET para {url}")
+                continue
+            n = datetime.now(timezone.utc)
+            e = datetime.fromisoformat(expiration)
+            days_diff = (e -n).days
 ########33
-            import random
-            days_diff = random.randint(1, 10)
-            expiration = datetime.now(timezone.utc) + timedelta(days=days_diff)
+#            import random
+#            days_diff = random.randint(1, 10)
+#            expiration = datetime.now(timezone.utc) + timedelta(days=days_diff)
 ##########
             self.logger.info(f"En {days_diff} días expira el dominio '{dominio}' ('{expiration}')")
 
@@ -80,7 +79,7 @@ class ExtensionImpl(Extension):
         # Dejo la línea para retomar esto luego.
         # 
         #intervalo = self.activation_config["intervalo"]
-        intervalo = 5
+        intervalo = 90
         self.schedule(self.dominios_custom_query, timedelta(minutes=intervalo))
         self.logger.info (f"La consulta de expiricón de dominios se realizará cada {intervalo} minutos")
 
