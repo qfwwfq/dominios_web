@@ -1,0 +1,106 @@
+{
+  "types": {
+    "intervalo": {
+      "type": "object",
+      "displayName": "Intervalo de consulta",
+      "summaryPattern": "{interval_minutes} minutos",
+      "properties": {
+        "interval_minutes": {
+          "displayName": "Intervalo de consulta en minutos",
+          "type": "integer",
+          "nullable": false,
+          "default": 15,
+          "constraints": [
+            {
+              "type": "RANGE",
+              "minValue": 1,
+              "maxValue": 1440
+            }
+          ]
+        }
+      }
+    },
+    "dynatrace.datasource.python:certificados-endpoint": {
+      "type": "object",
+      "displayName": "Certificados Endpoint",
+      "summaryPattern": "Certificados {dominio}",
+      "properties": {
+        "dominio": {
+          "displayName": "dominio",
+          "type": "text",
+          "nullable": false,
+          "default": ""
+        }
+      }
+    },
+    "pythonRemote": {
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "displayName": "Certificados endpoint",
+          "type": "list",
+          "items": {
+            "type": {
+              "$ref": "#/types/dynatrace.datasource.python:certificados-endpoint"
+            }
+          },
+          "nullable": false,
+          "minItems": 1,
+          "maxItems": 100,
+          "metaData": {
+            "addItemButton": "Add endpoint"
+          }
+        },
+        "intervalo": {
+          "displayName": "Intervalo de consulta",
+          "type": {
+            "$ref": "#/types/intervalo"
+          }
+        }
+      }
+    },
+    "pythonLocal": {
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "displayName": "Certificados endpoint",
+          "type": "list",
+          "items": {
+            "type": {
+              "$ref": "#/types/dynatrace.datasource.python:certificados-endpoint"
+            }
+          },
+          "nullable": false,
+          "minItems": 1,
+          "maxItems": 100,
+          "metaData": {
+            "addItemButton": "Add endpoint"
+          }
+        }
+      }
+    }
+  },
+  "dynatrace": "1",
+  "description": "certificados configuration",
+  "schemaId": "python-extension.activation",
+  "displayName": "certificados configuration",
+  "ownerProductManagement": "dynatrace",
+  "ownerDevelopment": "dynatrace",
+  "maturity": "GENERAL_AVAILABILITY",
+  "allowedScopes": ["tenant"],
+  "multiObject": false,
+  "properties": {
+    "pythonLocal": {
+      "displayName": "Python Local Extension",
+      "type": {
+        "$ref": "#/types/pythonLocal"
+      }
+    },
+    "pythonRemote": {
+      "displayName": "Python Remote Extension",
+      "type": {
+        "$ref": "#/types/pythonRemote"
+      }
+    }
+  }
+}
